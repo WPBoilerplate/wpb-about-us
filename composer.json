@@ -11,6 +11,9 @@
     "autoload": {
         "files": ["menu.php"]
     },
+    "require": {
+        "wpboilerplate/wpb-plugins-info": "dev-main"
+    },
     "support": {
         "issues": "https://github.com/WPBoilerplate/wpb-about-us/issues"
     },
