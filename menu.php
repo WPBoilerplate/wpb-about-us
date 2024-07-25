@@ -45,6 +45,9 @@ if ( ! class_exists( 'WPBoilerplate_Main_Menu' ) ) {
 			 * Add the parent menu into the Admin Dashboard
 			 */
 			add_action( 'admin_menu', array( $this, 'main_menu' ) );
+
+			add_action( 'plugin_action_links', array( $this, 'plugin_action_links' ), 1001, 2 );
+
 		}
 
 		/**
@@ -77,7 +80,7 @@ if ( ! class_exists( 'WPBoilerplate_Main_Menu' ) ) {
 			);
 		}
 
-		function about() {
+		public function about() {
 			?>
 			<style>
 				.wpboilerplate-container {
@@ -152,6 +155,33 @@ if ( ! class_exists( 'WPBoilerplate_Main_Menu' ) ) {
 				</div>
 			</div>
 			<?php
+		}
+
+		/**
+		 * Add Settings link to plugins area.
+		 *
+		 * @since    1.0.0
+		 *
+		 * @param array  $links Links array in which we would prepend our link.
+		 * @param string $file  Current plugin basename.
+		 * @return array Processed links.
+		 */
+		public function plugin_action_links( $links, $file ) {
+
+			$basename = WPBoilerplate_Plugins_Info::instance()->get_plugin_basename();
+
+			// Return normal links if not BuddyPress.
+			if ( $basename !== $file ) {
+				return $links;
+			}
+
+			// Add a few links to the existing links array.
+			return array_merge(
+				$links,
+				array(
+					'about'	=> sprintf( '<a href="%sadmin.php?page=%s">%s</a>', admin_url(), WPBOILERPLATE_MAIN_MENU, esc_html__( 'About', 'wpboilerplate' ) ),
+				)
+			);
 		}
 
 		/**
